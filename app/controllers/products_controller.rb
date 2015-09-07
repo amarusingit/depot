@@ -5,6 +5,7 @@ class ProductsController < ApplicationController
   # GET /products.json
   def index
     @products = Product.all
+    @leftbartime = Time.now
   end
 
   # GET /products/1
