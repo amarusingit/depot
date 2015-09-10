@@ -9,7 +9,12 @@
  		color: #226;
  		border-bottom: 3px dotted #77d;
  	}
-
+	h4 {
+		margin-left: 40%;
+		margin-top: -2%;
+		font: 100% sans-serif;
+			
+ 	}
  	/* Запись в каталоге store */
  	
  	.entry {
@@ -35,6 +40,9 @@
  			margin-left: 100px;
  			margin-top: 0.5em;
  			margin-bottom: 0.8em;
+ 			form, div {
+ 				display: inline;
+ 			}
  		}
  		.price {
  			color: #44a;
