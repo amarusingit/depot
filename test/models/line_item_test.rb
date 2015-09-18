@@ -1,7 +1,11 @@
 require 'test_helper'
 
 class LineItemTest < ActiveSupport::TestCase
-  # test "the truth" do
-  #   assert true
-  # end
+	
+	def new_product()
+		LineItem.new( cart: ,
+			product: ,
+			price: 15.5,
+			quantity: 10)
+	end
 end

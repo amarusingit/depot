@@ -1,9 +1,37 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  product_id: 
-  cart_id: 
+  product: ruby
+  cart: one
+  quantity: 45
+  price: 25.5
 
 two:
-  product_id: 
-  cart_id: 
+  product: ruby
+  cart: two
+  quantity: 5
+  price: 25.5
+
+three:
+  product: MyTitleForTestInDatabaseProducts1
+  cart: two
+  quantity: 10
+  price: 40
+
+four:
+  product: MyTitleForTestInDatabaseProducts2
+  cart: three
+  quantity: 100
+  price: 20
+
+five:
+  product: MyTitleForTestInDatabaseProducts2
+  cart: three
+  quantity: 2
+  price: 45
+
+six:
+  product: MyTitleForTestInDatabaseProducts2
+  cart: three
+  quantity: 1
+  price: 45
