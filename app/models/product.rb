@@ -5,10 +5,12 @@ class Product < ActiveRecord::Base
 	validates :title, :description, :image_url, presence: true
 	validates :price, numericality: {greater_than_or_equal_to: 0.01}
 	validates :title, uniqueness: {message: '(название товара) должно быть уникальным.'}
+	validates :image_url, uniqueness: {message: '(URL of image) должно быть уникальным.'}
 	validates :image_url, allow_blank: true, format: {
 				with: %r{\.(gif|jpg|png)\Z}i,
 				message: 'URL должен указывать на изображение формата GIF, JPG или PNG.'
 	}
+
 	validates :title, length: {minimum: 10} 
 
 	def self.latest
