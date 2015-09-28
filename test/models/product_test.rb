@@ -71,9 +71,9 @@ class ProductTest < ActiveSupport::TestCase
  		product = Product.new(title: "01234567891",
  			description: "yyy",
  			price: 1,
- 			image_url: "ruby.png")
+ 			image_url: products(:ruby).image_url)
  		assert product.invalid?
- 		assert_equal ["(имя файла с изображением товара) должно быть уникальным."], product.errors[:title]
+ 		assert_equal ["(URL of image) должно быть уникальным."], product.errors[:image_url]
  		# уже было использовано
 	end
 end
