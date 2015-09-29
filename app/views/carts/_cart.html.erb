@@ -7,7 +7,6 @@
 	</tr>
 </table>
 
-
 <%= button_to 'Очистить корзину', cart, method: :delete,
-data: { confirm: 'Вы уверены?' } %>
+data: { confirm: 'Вы уверены?'}, remote: true%>
 
