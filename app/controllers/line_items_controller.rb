@@ -1,6 +1,6 @@
 class LineItemsController < ApplicationController
   include CurrentCart
-  before_action :set_cart, only: [:create]
+  before_action :set_cart, only: [:create, :destroy]
   before_action :set_line_item, only: [:show, :edit, :update, :destroy]
 
   # GET /line_items
@@ -59,10 +59,18 @@ class LineItemsController < ApplicationController
   # DELETE /line_items/1
   # DELETE /line_items/1.json
   def destroy
-    @line_item = LineItem.find(params[:id])
-    @line_item.destroy
-    respond_to do |format|
-      format.html { redirect_to @line_item.cart, notice: 'Item was successfully deleted from your cart.' }
+
+puts "                                                               "
+puts "                                                               "
+puts "@cart=#{@cart}"
+puts "@line_item=#{@line_item}"
+puts "                                                               "
+puts "                                                               "
+puts "before decr @line_item.quantity=#{@line_item.quantity}"
+@cart.decr_item(@line_item)
+puts "after decr @line_item.quantity=#{@line_item.quantity}"  
+    respond_to do |format|                 
+      format.html { redirect_to store_url }
       format.json { head :no_content }
     end
   end
