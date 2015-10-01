@@ -59,18 +59,10 @@ class LineItemsController < ApplicationController
   # DELETE /line_items/1
   # DELETE /line_items/1.json
   def destroy
-
-puts "                                                               "
-puts "                                                               "
-puts "@cart=#{@cart}"
-puts "@line_item=#{@line_item}"
-puts "                                                               "
-puts "                                                               "
-puts "before decr @line_item.quantity=#{@line_item.quantity}"
-@cart.decr_item(@line_item)
-puts "after decr @line_item.quantity=#{@line_item.quantity}"  
+    @cart.decr_item(@line_item)
     respond_to do |format|                 
       format.html { redirect_to store_url }
+      format.js { @current_item = @line_item }
       format.json { head :no_content }
     end
   end
