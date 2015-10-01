@@ -13,14 +13,15 @@ class Cart < ActiveRecord::Base
  	end
 
 	def decr_item(current_item)
- 		if current_item
+		if current_item
  			if current_item.quantity>1
  				current_item.quantity -= 1
  			else
  				current_item.destroy
  			end	
- 		end
+ 		end	
   		current_item.save!
+  		current_item
  	end
 
 	def total_price

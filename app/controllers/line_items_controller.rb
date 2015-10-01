@@ -59,7 +59,8 @@ class LineItemsController < ApplicationController
   # DELETE /line_items/1
   # DELETE /line_items/1.json
   def destroy
-    @cart.decr_item(@line_item)
+
+    @line_item=@cart.decr_item(@line_item)
     respond_to do |format|                 
       format.html { redirect_to store_url }
       format.js { @current_item = @line_item }
