@@ -1,8 +1,8 @@
 class Order < ActiveRecord::Base
 	has_many :line_items, dependent: :destroy
-	has_one :pay_types
+	belongs_to :pay_type
 
-	validates_presence_of :pay_type
+    validates :pay_type_id, presence: true
 
 	validates :name, :address, :email, presence: true
 

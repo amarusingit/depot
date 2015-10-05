@@ -24,10 +24,10 @@
     <%= f.email_field :email, size: 40 %>
   </div>
   <div class="field">
-    <%= f.label :pay_type %><br>
-    <%= f.select :pay_type, PayType.all.map(&:title),
+    <%= f.label :pay_type_id %><br>
+    <%= f.select :pay_type_id, PayType.all.collect{|p| [ p.title, p.id ]},
         prompt: 'Select a payment method' %>
-  </div>
+   </div>
   <div class="actions">
     <%= f.submit 'Place Order' %>
   </div>
