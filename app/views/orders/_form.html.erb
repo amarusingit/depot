@@ -28,7 +28,21 @@
     <%= f.select :pay_type, PayType.all.collect{|p| [ p.title ]},
         prompt: 'Select a payment method' %>
    </div>
-  <div class="actions">
-    <%= f.submit 'Place Order' %>
+  <div class="actions"> 
+  <% if current_page?(new_order_path) %>
+      <%= f.submit 'Place Order' %>
+  <% else %>
+      <div class="field">
+          <% if @order.ship_date %>
+          <%    shipped = 1 %>
+          <% else  %>
+          <%    shipped = 0 %>
+          <% end %>     
+          <%= check_box_tag(:shipped) %>
+          <%= label_tag(:shipped, "Подтвердить отгрузку") %> <br>
+           Ship date: <%= @order.ship_date %> <br>
+      </div>
+      <%= f.submit 'Update Order' %>
+  <% end %>    
   </div>
 <% end %>

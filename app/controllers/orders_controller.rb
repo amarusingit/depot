@@ -32,12 +32,12 @@ class OrdersController < ApplicationController
   def create
     @order = Order.new(order_params)
     @order.add_line_items_from_cart(@cart)
-
+ 
     respond_to do |format|
       if @order.save
         Cart.destroy(session[:cart_id])
         session[:cart_id] = nil
-        OrderNotifier.received(@order).deliver
+        OrderNotifier.received(@order).deliver_now
         format.html { redirect_to store_url, notice: 'Thank you for your order.' }
         format.json { render :show, status: :created, location: @order }
       else
@@ -51,10 +51,18 @@ class OrdersController < ApplicationController
   # PATCH/PUT /orders/1
   # PATCH/PUT /orders/1.json
   def update
+    notice_to_buyer = 'Order was successfully updated.'
+    if params[:shipped] == "1"
+       @order.ship_date = Time.zone.now 
+       notice_to_buyer += 'Shipping date setted.'
+    end
     respond_to do |format|
       if @order.update(order_params)
-        format.html { redirect_to @order, notice: 'Order was successfully updated.' }
-        format.json { render :show, status: :ok, location: @order }
+        if params[:shipped] == "1"
+            OrderNotifier.shipped(@order).deliver_now
+        end
+        format.html { redirect_to orders_url, notice: notice_to_buyer }
+        format.json { render :show, status: :ok, location: orders_url }
       else
         format.html { render :edit }
         format.json { render json: @order.errors, status: :unprocessable_entity }

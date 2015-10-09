@@ -21,6 +21,7 @@ class OrdersControllerTest < ActionController::TestCase
     item = LineItem.new
     item.build_cart
     item.product = products(:ruby)
+    item.price = products(:ruby).price
     item.save!
     session[:cart_id] = item.cart.id
     get :new
@@ -47,7 +48,7 @@ class OrdersControllerTest < ActionController::TestCase
 
   test "should update order" do
     patch :update, id: @order, order: { address: @order.address, email: @order.email, name: @order.name, pay_type: @order.pay_type }
-    assert_redirected_to order_path(assigns(:order))
+    assert_redirected_to orders_path
   end
 
   test "should destroy order" do

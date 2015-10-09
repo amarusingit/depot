@@ -9,7 +9,11 @@
 		<td class="item_price"><%= number_to_currency(line_item.total_price) %></td>
 	</tr>
 	
-<tr>
-<td> </td>
-<td> <%= button_to 'Уменьшить', line_item, method: :delete, remote: true %> </td>
-</tr>
+<% if @_controller.to_s["OrderNotifier"] != "OrderNotifier" %>
+  <tr>
+	<td> </td>
+	<td> <%= button_to 'Уменьшить', line_item, method: :delete, remote: true %> </td>
+	</tr>
+<% end %>   
+
+
