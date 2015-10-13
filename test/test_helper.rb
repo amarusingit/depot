@@ -17,6 +17,15 @@ class ActiveSupport::TestCase
   end
   
   def setup
+      #byebug if self.to_s.include? "DepotShippingTest"
+      #byebug if self.to_s.include? "UserStoriesTest"
+      
+      #if defined? session
+      #   puts "Session defined ! #{self.to_s}"
+      #else
+      #   puts "Session NOT defined ! #{self.to_s}"
+      #end    
+      #byebug 
       login_as :one if defined? session
       #login_as :one
   end

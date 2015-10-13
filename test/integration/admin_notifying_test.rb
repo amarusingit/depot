@@ -9,15 +9,11 @@ class AdminNotifyingTest < ActionDispatch::IntegrationTest
 		assert_response :success
 		assert_template "index"
 		
-		session[:user_id] = users(:one).id
-		byebug
-        get "/carts/#{carts(:one).id}/edit"
-		byebug
-		assert_response :success
-		
-		get "/carts/1/edit" 
-		
+		post_via_redirect "/login", name: users(:one).name, password: "secret"
+    	assert_template "admin/index"
+    	assert_equal users(:one).id, session[:user_id]
 
+		get "/carts/1/edit"
 		assert_response :redirect
 		assert_redirected_to store_path
 		
