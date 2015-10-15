@@ -43,19 +43,23 @@ class UsersController < ApplicationController
   # PATCH/PUT /users/1.json
   def update
 
-    byebug
 
-    respond_to do |format|
-      if @user.update(user_params)
-        format.html { redirect_to users_url,
+    if @user.authenticate(params[:user][:current_password])
+      respond_to do |format|
+        if @user.update(user_params)
+          format.html { redirect_to users_url,
              notice: "Сведения о пользователе #{@user.name} были успешно обновлены." }
-        format.json { render :show, status: :ok, location: @user }
-      else
-        format.html { render :edit }
-        format.json { render json: @user.errors, status: :unprocessable_entity }
+          format.json { render :show, status: :ok, location: @user }
+        else
+          format.html { render :edit }
+          format.json { render json: @user.errors, status: :unprocessable_entity }
+        end
       end
+    else
+      flash[:notice] = "Неверно введен текущий пароль. Параметры пользователя не изменены."
+      redirect_to users_url
     end
-  end
+  end  
 
   # DELETE /users/1
   # DELETE /users/1.json
