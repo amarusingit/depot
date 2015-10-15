@@ -29,7 +29,7 @@
 					<li><a href="http://www..../contact">Contact</a></li>
 				</ul>
 
-				<% if session[:user_id] %>
+				<% if session[:user_id] or User.count==0%>
      				<ul>
          				<li><%= link_to 'Orders', orders_path %></li>
          				<li><%= link_to 'Products', products_path %></li>

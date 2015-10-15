@@ -5,9 +5,10 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
   protected
+  
     def authorize
-        unless User.find_by(id: session[:user_id])
-        redirect_to login_url, notice: "Пожалуйста, пройдите авторизацию"
+        unless User.find_by(id: session[:user_id]) or User.count==0
+          redirect_to login_url, notice: "Пожалуйста, пройдите авторизацию"
+        end
     end
-  end
 end
