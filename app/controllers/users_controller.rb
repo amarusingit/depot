@@ -42,6 +42,9 @@ class UsersController < ApplicationController
   # PATCH/PUT /users/1
   # PATCH/PUT /users/1.json
   def update
+
+    byebug
+
     respond_to do |format|
       if @user.update(user_params)
         format.html { redirect_to users_url,
