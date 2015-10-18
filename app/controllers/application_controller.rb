@@ -7,8 +7,21 @@ class ApplicationController < ActionController::Base
   protected
   
     def authorize
-        unless User.find_by(id: session[:user_id]) or User.count==0
-          redirect_to login_url, notice: "Пожалуйста, пройдите авторизацию"
-        end
+#byebug
+      return if User.count.zero?
+
+      if request.format.HTML?
+          unless User.find_by(id: session[:user_id]) 
+              redirect_to login_url, notice: "Пожалуйста, пройдите авторизацию"
+          end
+      else
+          if user = authenticate_or_request_with_http_basic do |u, p|
+                User.find_by_name(u).try(:authenticate, p)
+              end
+          session[:user_id] = user.id      
+
+          end    
+          #byebug    
+      end
     end
 end
