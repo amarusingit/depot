@@ -2,21 +2,7 @@
 	<p id="notice"><%= notice %></p>
 <% end %>
 
-
-
-
-<h1>Your Pragmatic Catalog 
-	<% if session[:counter]>5 %>
-		. This page was beeing opened 
-			<%= session[:counter] %>
-			<%= 'time'.pluralize(session[:counter]) %> 
-			.
-		<% end %>
-</h1>
-
-
-
-
+<h1><%= t('.title_html') %></h1>
 
 <% cache ['store', Product.latest] do %>
 	<% @products.each do |product| %>
@@ -27,7 +13,7 @@
 				<p> <%= sanitize(product.description) %> </p>
 				<div class="price_line">
 					<span class="price"><%= number_to_currency(product.price, unit: " руб.", format: "от %n%u") %> </span>
-					<%= button_to 'Add to Cart', line_items_path(product_id: product), remote: true %>
+					<%= button_to t('.add_html'), line_items_path(product_id: product), remote: true %>
 				</div>
 			</div>
 		<% end %>

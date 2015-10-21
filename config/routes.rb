@@ -11,13 +11,17 @@ Rails.application.routes.draw do
 
   resources :users
   resources :pay_types
-  resources :orders
-  resources :line_items
-  resources :carts
   get 'store/index'
 
   resources :products do
     get :who_bought, on: :member
+  end
+
+  scope '(:locale)' do
+    resources :orders
+    resources :line_items
+    resources :carts
+    root 'store#index', as: 'store', via: :all
   end
 
   resources :products
@@ -27,7 +31,7 @@ Rails.application.routes.draw do
   # You can have the root of your site routed with "root"
   # root 'welcome#index'
 
-  root to: 'store#index', as: 'store'
+  #root to: 'store#index', as: 'store'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
