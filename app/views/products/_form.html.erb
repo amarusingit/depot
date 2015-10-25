@@ -20,6 +20,12 @@
     <%= f.text_area :description, rows: 6 %>
   </div>
   <div class="field">
+    <% productlocale = @product.locale %>
+    <%= f.label :locale %><br>
+    <%= f.select :locale, options_for_select(LANGUAGES, @product.locale),
+        prompt: 'Select localization' %>
+  </div>
+  <div class="field">
     <%= f.label :image_url %><br>
     <%= f.text_field :image_url %>
   </div>
