@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Curs:</strong>
+  <%= @currency.curs %>
+</p>
+
+<p>
+  <strong>Datecurs:</strong>
+  <%= @currency.datecurs %>
+</p>
+
+<%= link_to 'Edit', edit_currency_path(@currency) %> |
+<%= link_to 'Back', currencies_path %>

@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   
+  resources :currencies
   get 'admin' => 'admin#index'
   
   controller :sessions do
