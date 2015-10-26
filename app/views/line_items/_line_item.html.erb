@@ -12,7 +12,7 @@
 <% if @_controller.to_s["OrderNotifier"] != "OrderNotifier" %>
   <tr>
 	<td> </td>
-	<td> <%= button_to 'Уменьшить', line_item, method: :delete, remote: true %> </td>
+	<td> <%= button_to t('.decrease'), line_item, method: :delete, remote: true %> </td>
 	</tr>
 <% end %>   
 

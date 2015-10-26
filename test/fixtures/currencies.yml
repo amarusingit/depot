@@ -1,9 +1,9 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  curs: 9.99
-  datecurs: 2015-10-25
+  curs: 1.2000
+  datecurs: 2015-01-01
 
 two:
-  curs: 9.99
+  curs: 1.5000
   datecurs: 2015-10-25

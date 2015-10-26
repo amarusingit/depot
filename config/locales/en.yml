@@ -30,13 +30,18 @@ en:
 
     store:
         index:
-            title_html:  "Your Pragmatic Catalog"
-            add_html:    "Add to Cart"
+            title_html:       "Your Pragmatic Catalog"
+            add_html:         "Add to Cart"
+            curr_name_html:   " US$"
 
     carts:
         cart:
             title:        "Your Cart"
             empty:        "Empty cart"
             checkout:     "Checkout"
+
+    line_items:
+        line_item:
+            decrease:     "Decrease"
 
     thanks:               "Thank you for your order"
