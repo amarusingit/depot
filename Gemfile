@@ -8,7 +8,7 @@ group :development, :test do
 	gem 'sqlite3'
 end
 group :production do
-	gem 'mysql2', '0.3.18'
+	gem 'mysql2', '~>0.3.18'
 end
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
