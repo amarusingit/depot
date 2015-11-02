@@ -5,8 +5,7 @@
 <h1><%= t('.title_html') %></h1>
 
 <% cache ['store', Product.latest] do %>
-
-	<% @products.where("locale=='#{locale}'").find_each do |product| %>
+	<% @products.where('locale="'+locale.to_s+'"').find_each do |product| %>
 		<% cache ['entry', product] do %>
 			<div class="entry">
 				<%= image_tag(product.image_url) %>
