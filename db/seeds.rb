@@ -20,3 +20,5 @@ PayType.create!(title: 'Check')
 PayType.create!(title: 'Purchase order')
 PayType.create!(title: 'Credit card')
 PayType.create!(title: 'Cash on delivered')
+
+Currency.create!(curs: 1.15, datecurs: '2015-01-01')
