@@ -1,27 +1,4 @@
-<<<<<<< HEAD
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the rake db:seed (or created alongside the db with db:setup).
-#
-# Examples:
-#
-#   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
-#   Mayor.create(name: 'Emanuel', city: cities.first)
-#Product.create!(title: 'Programming Ruby 1.9 & 2.0',
-# description:
-# %{<p>
-# Ruby is the fastest growing and most exciting dynamic language
-# out there. If you need to get working programs delivered fast,
-# you should add Ruby to your toolbox.
-# </p>},
-# image_url: 'ruby.jpg',
-# price: 49.95)
-#
 
-PayType.create!(title: 'Check')
-PayType.create!(title: 'Purchase order')
-PayType.create!(title: 'Credit card')
-PayType.create!(title: 'Cash on delivered')
-=======
 # This file should contain all the record creation needed to seed the database with its default values.
 # The data can then be loaded with the rake db:seed (or created alongside the db with db:setup).
 #
@@ -46,4 +23,4 @@ PayType.create!(title: 'Credit card')
 PayType.create!(title: 'Cash on delivered')
 
 Currency.create!(curs: 1.15, datecurs: '2015-01-01')
->>>>>>> 1d60c001f210da797d09b75e6bc4a00614e6e031
+
