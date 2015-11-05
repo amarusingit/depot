@@ -1,12 +1,13 @@
 set :user, 'andrew'
 set :domain, 'www.mydepot.com'
+set :ssh_options,   { forward_agent: true }
 set :application, 'depot'
 # adjust if you are using RVM, remove if you are not
 set :rvm_type, :user
 set :rvm_ruby_string, 'ruby-2.0.0-p643'
 require 'rvm/capistrano'
 # file paths
-set :repository, "#{user}@#{domain}:git/#{application}.git"
+set :repository, "ssh://#{user}@#{domain}/~/git/#{application}.git"
 set :deploy_to, "/home/#{user}/Sites/#{application}"
 # distribute your applications across servers (the instructions below put them
 # all on the same server, defined above as 'domain', adjust as necessary)
