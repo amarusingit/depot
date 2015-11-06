@@ -15,7 +15,13 @@ group :development, :test do
 end
 
 # Use Capistrano for deployment
-gem 'rvm-capistrano', group: :development
+group :development do
+  gem 'capistrano', '~> 3.1.0'
+  gem 'capistrano-rails', '~> 1.1.1'
+  gem 'capistrano-bundler', '~> 1.1.2'
+  gem 'capistrano-rvm'
+  gem 'capistrano-rbenv'
+end
 
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
