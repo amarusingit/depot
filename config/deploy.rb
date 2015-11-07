@@ -1,14 +1,57 @@
 # config valid only for Capistrano 3.1
 lock '3.1.0'
 
-set :application, 'my_app_name'
-set :repo_url, 'git@example.com:me/my_repo.git'
+set :application, 'depot'
+set :repo_url, "andrew@www.mydepot.com/~/git/depot.git"
 
 # Default branch is :master
 # ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }
 
 # Default deploy_to directory is /var/www/my_app
 # set :deploy_to, '/var/www/my_app'
+set :deploy_to, "/home/andrew/Sites/depot"
+set :rails_env, 'production'
+
+# Supports bulk-adding hosts to roles, the primary
+# server in each group is considered to be the first
+# unless any hosts have the primary property set.
+# Don't declare `role :all`, it's a meta role
+#role :app, "andrew@www.mydepot.com"
+#role :web, "andrew@www.mydepot.com"
+#role :db,  "andrew@www.mydepot.com"
+
+# Extended Server Syntax
+# ======================
+# This can be used to drop a more detailed server
+# definition into the server list. The second argument
+# something that quacks like a hash can be used to set
+# extended properties on the server.
+server "www.mydepot.com", user: "andrew", roles: %w{web app db}, my_property: :my_value
+
+# you can set custom ssh options
+# it's possible to pass any option but you need to keep in mind that net/ssh understand limited list of options
+# you can see them in [net/ssh documentation](http://net-ssh.github.io/net-ssh/classes/Net/SSH.html#method-c-start)
+# set it globally
+  set :ssh_options, {
+    keys: %w(/home/andrew/.ssh/capigit_rsa),
+    forward_agent: false,
+    auth_methods: %w(password)
+  }
+# and/or per server
+# server 'example.com',
+#   user: 'user_name',
+#   roles: %w{web app},
+#   ssh_options: {
+#     user: 'user_name', # overrides user setting above
+#     keys: %w(/home/user_name/.ssh/id_rsa),
+#     forward_agent: false,
+#     auth_methods: %w(publickey password)
+#     # password: 'please use keys'
+#   }
+# setting per server overrides global ssh_options
+
+
+
 
 # Default value for :scm is :git
 # set :scm, :git
@@ -41,17 +84,24 @@ namespace :deploy do
     on roles(:app), in: :sequence, wait: 5 do
       # Your restart mechanism here, for example:
       # execute :touch, release_path.join('tmp/restart.txt')
+      execute :touch, release_path.join('tmp/restart.txt')
     end
   end
+
+  desc "reload the database with seed data"
+  task :seed do
+      execute "cd #{current_path}; rake db:seed RAILS_ENV=#{rails_env}"
+  end
+
 
   after :publishing, :restart
 
   after :restart, :clear_cache do
     on roles(:web), in: :groups, limit: 3, wait: 10 do
       # Here we can do anything such as:
-      # within release_path do
-      #   execute :rake, 'cache:clear'
-      # end
+      within release_path do
+         execute :rake, 'cache:clear'
+      end
     end
   end
 
