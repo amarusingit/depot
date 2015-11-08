@@ -2,7 +2,8 @@
 lock '3.1.0'
 
 set :application, 'depot'
-set :repo_url, "andrew@www.mydepot.com/~/git/depot.git"
+set :repo_url, "ssh://andrew@www.mydepot.com/~/git/depot.git"
+
 
 # Default branch is :master
 # ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }
@@ -11,6 +12,7 @@ set :repo_url, "andrew@www.mydepot.com/~/git/depot.git"
 # set :deploy_to, '/var/www/my_app'
 set :deploy_to, "/home/andrew/Sites/depot"
 set :rails_env, 'production'
+set :default_env, { rvm_bin_path: '~/.rvm/bin' }
 
 # Supports bulk-adding hosts to roles, the primary
 # server in each group is considered to be the first
@@ -20,23 +22,25 @@ set :rails_env, 'production'
 #role :web, "andrew@www.mydepot.com"
 #role :db,  "andrew@www.mydepot.com"
 
+  set :ssh_options, {
+    keys: %w(/home/andrew/.ssh/capigit_rsa),
+    forward_agent: false,
+    auth_methods: %w(publickey password)
+  }
+
 # Extended Server Syntax
 # ======================
 # This can be used to drop a more detailed server
 # definition into the server list. The second argument
 # something that quacks like a hash can be used to set
 # extended properties on the server.
-server "www.mydepot.com", user: "andrew", roles: %w{web app db}, my_property: :my_value
+server "www.mydepot.com", user: "andrew", roles: %w{web app db}, ssh_options: fetch(:ssh_options)
 
 # you can set custom ssh options
 # it's possible to pass any option but you need to keep in mind that net/ssh understand limited list of options
 # you can see them in [net/ssh documentation](http://net-ssh.github.io/net-ssh/classes/Net/SSH.html#method-c-start)
 # set it globally
-  set :ssh_options, {
-    keys: %w(/home/andrew/.ssh/capigit_rsa),
-    forward_agent: false,
-    auth_methods: %w(password)
-  }
+
 # and/or per server
 # server 'example.com',
 #   user: 'user_name',
@@ -84,6 +88,8 @@ namespace :deploy do
     on roles(:app), in: :sequence, wait: 5 do
       # Your restart mechanism here, for example:
       # execute :touch, release_path.join('tmp/restart.txt')
+      execute :mkdir, '-p', release_path.join('tmp')
+      info "create folder "+release_path.join('tmp').to_s
       execute :touch, release_path.join('tmp/restart.txt')
     end
   end
@@ -100,7 +106,7 @@ namespace :deploy do
     on roles(:web), in: :groups, limit: 3, wait: 10 do
       # Here we can do anything such as:
       within release_path do
-         execute :rake, 'cache:clear'
+         execute :rake, 'tmp:clear'
       end
     end
   end
