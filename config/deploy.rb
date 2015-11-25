@@ -14,6 +14,11 @@ set :deploy_to, "/home/andrew/Sites/depot"
 set :rails_env, 'production'
 set :default_env, { rvm_bin_path: '~/.rvm/bin' }
 
+
+# files we want symlinking to specific entries in shared.
+set :linked_files, %w{config/database.yml config/database.yml}
+
+
 # Supports bulk-adding hosts to roles, the primary
 # server in each group is considered to be the first
 # unless any hosts have the primary property set.
@@ -99,6 +104,10 @@ namespace :deploy do
       execute "cd #{current_path}; rake db:seed RAILS_ENV=#{rails_env}"
   end
 
+  desc "copy secret files to project"
+  task :copysec do
+      execute "cp #{current_path}; rake db:seed RAILS_ENV=#{rails_env}"
+  end
 
   after :publishing, :restart
 
