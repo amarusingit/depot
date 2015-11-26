@@ -43,9 +43,9 @@ ActiveRecord::Schema.define(version: 20151025175519) do
     t.string   "name"
     t.text     "address"
     t.string   "email"
+    t.string   "pay_type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string   "pay_type"
     t.datetime "ship_date"
   end
 
