@@ -1,0 +1,23 @@
+
+	
+
+A very simple and straight foward way that worked for me is as follows:
+
+1. First, stop apache2
+$ sudo service apache2 stop
+
+2. Uninstall Apache2 and its dependent packages
+$ sudo apt-get purge apache2 apache2-utils apache2.2-bin apache2-common
+
+3. Also use autoremove option to get rid of other dependencies
+$ sudo apt-get autoremove
+
+4. Check whether there are any configuration files have not been removed
+$ whereis apache2
+
+If you get a response as follows apache2: /etc/apache2
+
+5. Remove the directory and existing configuration files
+$ sudo rm -rf /etc/apache2
+
+Many thanks got out to D. Nanni.

@@ -3,8 +3,6 @@
 <% end %>
 
 <h1><%= t('.title_html') %></h1>
-<h1><session[:currency_rate]=><%= session[:currency_rate] %></h1>
-
 
 <% cache ['store', Product.latest, locale] do %>
 	<% @products.where('locale="'+locale.to_s+'"').find_each do |product| %>

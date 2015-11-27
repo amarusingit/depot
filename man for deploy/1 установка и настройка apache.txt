@@ -1,0 +1,16 @@
+”становка Apache2
+
+
+все делаем из под пользовател€, под которым будет работать сайт, а не из под рута !
+
+sudo apt-get install apache2 apache2-dev
+
+”становим кучу зависимостей, которые потребуютс€ нам в дальнейшем (и дл€ типовых RoR-проектов в том числе):
+
+sudo apt-get install build-essential git-core screen curl libcurl3 libcurl3-gnutls libcurl4-openssl-dev mc imagemagick libxslt-dev libxml2-dev python-software-properties nodejs
+
+дл€ подавлени€ сообщени€ о неизвестном localhost добал€ем строку
+в файл /etc/apache2/httpd.conf:
+localhost 127.0.0.1
+
+
