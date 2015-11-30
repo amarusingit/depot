@@ -5,8 +5,8 @@ source 'https://rubygems.org'
 gem 'rails', '4.2.4'
 
 group :production do
-    # Use mysql as the database for Active Record in production 
-    gem 'mysql2', '~> 0.3.18'
+    # Use postgresql as the database for Active Record in production 
+    gem 'pg'
 end
 
 group :development, :test do
