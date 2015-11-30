@@ -11,8 +11,17 @@ default: &default
   timeout: 5000
 
 development:
-  <<: *default
-  database: db/development.sqlite3
+  adapter: postgresql
+  encoding: utf8
+  database: depot_development
+  pool: 5
+  username: andrew
+  password: r5t6yR%T^Y
+  host: localhost
+
+
+#  <<: *default
+#  database: db/development.sqlite3
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
@@ -22,11 +31,12 @@ test:
   database: db/test.sqlite3
 
 production:
-  adapter: pg
+  adapter: postgresql
   encoding: utf8
-  reconnect: false
-  username: 11111 
-  password: 11111 
+  database: depot_production
+  pool: 5
+  username: andrew
+  password: r5t6yR%T^Y
   host: localhost
 
 

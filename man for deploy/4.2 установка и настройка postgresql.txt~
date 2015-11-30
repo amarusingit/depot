@@ -40,14 +40,11 @@ production:
 set :linked_files, %w{config/database.yml config/database.yml}
 
 база данных инициализируется из папки приложения:
-rake db:setup RAIL_ENV="production"
+rake db:setup RAILS_ENV="production"
 
 ошибки смотрим в логах:
 /var/log/apache2   -    ошибки web-сервера
 /папка приложения/log - ошибки RoR
-
-создаем БД
-rake db:setup rail_env='production'
 
 бьемся поодня чтобы понять, что надо изменить ключ кэша в store view/index.html.rb
 

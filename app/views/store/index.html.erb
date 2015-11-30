@@ -5,6 +5,7 @@
 <h1><%= t('.title_html') %></h1>
 
 <% cache ['store', Product.latest, locale] do %>
+	<% byebug %>
 	<% @products.where('locale="'+locale.to_s+'"').find_each do |product| %>
 		<% cache ['entry', product] do %>
 			<div class="entry">

@@ -12,6 +12,7 @@ end
 group :development, :test do
     # Use sqlite3 as the database for Active Record for test and development
     gem 'sqlite3'
+    gem 'pg' 
 end
 
 # Use Capistrano for deployment
@@ -51,9 +52,12 @@ gem 'bcrypt'
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
+gem 'byebug'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-  gem 'byebug', platform: [:ruby_20] 
+  #gem 'byebug', platform: [:ruby_20] 
+  #gem 'byebug'
 
   # Access an IRB console on exception pages or by using <%= console %> in views
   gem 'web-console', '~> 2.0'
