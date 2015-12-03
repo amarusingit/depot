@@ -4,15 +4,14 @@ source 'https://rubygems.org'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.4'
 
-group :production do
+group :production, :development do
     # Use postgresql as the database for Active Record in production 
     gem 'pg'
 end
 
-group :development, :test do
+group :test do
     # Use sqlite3 as the database for Active Record for test and development
     gem 'sqlite3'
-    gem 'pg' 
 end
 
 # Use Capistrano for deployment

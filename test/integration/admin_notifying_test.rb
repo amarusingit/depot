@@ -15,7 +15,7 @@ class AdminNotifyingTest < ActionDispatch::IntegrationTest
 
 		get "/carts/1/edit"
 		assert_response :redirect
-		assert_redirected_to store_path
+		assert_redirected_to store_path(locale: "en")
 		
 		mail = ActionMailer::Base.deliveries.last
 		assert_equal ["admin@fancy_gifts_shop.net"], mail.to

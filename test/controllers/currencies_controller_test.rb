@@ -17,8 +17,8 @@ class CurrenciesControllerTest < ActionController::TestCase
   end
 
   test "should create currency" do
-    assert_difference('Currency.count') do
-      post :create, currency: { curs: @currency.curs, datecurs: @currency.datecurs }
+    assert_difference('Currency.count') do 
+      post :create, currency: { curs: @currency.curs, datecurs: @currency.datecurs+1 }
     end
 
     assert_redirected_to currency_path(assigns(:currency))

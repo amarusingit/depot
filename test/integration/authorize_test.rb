@@ -14,7 +14,7 @@ class AuthorizeTest < ActionDispatch::IntegrationTest
 		assert_response :success
 
   		get "/orders"
-  		assert_redirected_to login_url
+  		assert_redirected_to login_url(locale: "en")
 
  		post_via_redirect "/login", name: users(:one).name, password: "secret"
     	assert_template "admin/index"
@@ -25,6 +25,6 @@ class AuthorizeTest < ActionDispatch::IntegrationTest
 		assert_template "orders/index"
 
 		get "/logout"
-		assert_redirected_to store_url
+		assert_redirected_to store_url(locale: "en")
 	end
 end

@@ -5,14 +5,15 @@
 <h1><%= t('.title_html') %></h1>
 
 <% cache ['store', Product.latest, locale] do %>
-	<% byebug %>
-	<% @products.where('locale="'+locale.to_s+'"').find_each do |product| %>
+	<% condilocal = "locale="+ %>
+
+	<% @products.where("locale='"+locale.to_s+"'").find_each do |product| %>
 		<% cache ['entry', product] do %>
 			<div class="entry">
 				<%= image_tag(product.image_url) %>
 				<h3><%= product.title %></h3>
 				<p> <%= sanitize(product.description) %> </p>
-				<div class="price_line   
+				<div class="price_line">   
                     <span class="price">
 						<%= number_to_currency(product.price/session[:currency_rate], unit: t('.curr_name_html'), format: "%n%u") %> 
 					</span>
