@@ -21,8 +21,9 @@ set :rbenv_map_bins, %w{rake gem bundle ruby rails}
 
 
 # files we want symlinking to specific entries in shared.
-set :linked_files, %w{config/database.yml config/database.yml}
+set :linked_files, %w{config/database.yml}
 
+set :linked_dirs, %w{shared}
 
 # Supports bulk-adding hosts to roles, the primary
 # server in each group is considered to be the first
