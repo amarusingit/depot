@@ -39,8 +39,11 @@ stdout_path "#{shared_dir}/log/unicorn.stdout.log"
 # Set master PID location
 pid "#{shared_dir}/pids/unicorn.pid"
 
-создаем папки, указанные в unicorn.rb
+создаем папки, указанные в unicorn.rb внутри папки shared на сервере (production)
 mkdir -p shared/pids shared/sockets shared/log
+
+в файле deploy.rb (в девелопмент) настраиваем создание символьной ссылки на папкут shared/shared:
+set :linked_dirs, %w{shared}
 
 фиксим состояние гитом и передаем его в продакшн
 
