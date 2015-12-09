@@ -17,27 +17,41 @@ sudo apt-get purge apache2*
 удаляем неиспользуемые модули
 sudo apt-get autoremove
 
+удаляем rbenv ruby, т.к. unicorn не захотел работать 
+из под sudo (смотрим инструкцию по установке, также вычищаем
+ссылки на rbenv из файлов в профайле), удаляем папки.
+При переходе на rvm не забываем проверить настройки capistrano 
+
 устанавливаем unicorn, добавляем в gemfile в среде разработки (development):
 gem 'unicorn'
+
+для нормальной работы unicorn зачем-то требует gem sqlite3, поэтому
+его пришлось в gemfile вынести из подсекции test в общий список
 
 bundle install
 
 формируем файл config\unicorn.rb
+-------------------------------------------------------------
 # set path to application
 app_dir = File.expand_path("../..", __FILE__)
 shared_dir = "#{app_dir}/shared"
 working_directory app_dir
+
 # Set unicorn options
 worker_processes 2
 preload_app true
 timeout 30
+
 # Set up socket location
 listen "#{shared_dir}/sockets/unicorn.sock", :backlog => 64
+
 # Logging
 stderr_path "#{shared_dir}/log/unicorn.stderr.log"
 stdout_path "#{shared_dir}/log/unicorn.stdout.log"
+
 # Set master PID location
 pid "#{shared_dir}/pids/unicorn.pid"
+--------------------------------------------------------------
 
 создаем папки, указанные в unicorn.rb внутри папки shared на сервере (production)
 mkdir -p shared/pids shared/sockets shared/log
@@ -49,81 +63,139 @@ set :linked_dirs, %w{shared}
 
 на сервере (production)
 
+Мы будем запускать Unicorn в init, поэтому необходимо создать обёртку:
+rvm wrapper default default bundle
+
+Где лежит обёртка можно посмотреть так:
+which default_bundle
+и именно этот путь надо задать для переменной bundle в скрипте ниже.
+
+
 создаем скрипт, запускающий юникорн
 sudo vi /etc/init.d/unicorn_depot
-
 внутри скрипта:
+-------------------------------------------------------------
+
 #!/bin/sh
+
 ### BEGIN INIT INFO
-# Provides:          unicorn
-# Required-Start:    $all
-# Required-Stop:     $all
+# Provides:          unicorn_dobroserver
+# Required-Start:    $local_fs $remote_fs $network $syslog
+# Required-Stop:     $local_fs $remote_fs $network $syslog
 # Default-Start:     2 3 4 5
 # Default-Stop:      0 1 6
-# Short-Description: starts the unicorn app server
+# Short-Description: starts the unicorn web server
 # Description:       starts unicorn using start-stop-daemon
 ### END INIT INFO
-set -e
-USAGE="Usage: $0 <start|stop|restart|upgrade|rotate|force-stop>"
-# app settings
-USER="andrew"
-APP_NAME="depot"
-APP_ROOT="/home/$USER/Sites/$APP_NAME/current"
-ENV="production"
 
-# environment settings
-PATH="/home/$USER/.rbenv/shims:/home/$USER/.rbenv/bin:$PATH"
-CMD="cd $APP_ROOT && bundle exec unicorn -c config/unicorn.rb -E $ENV -D"
-PID="$APP_ROOT/shared/pids/unicorn.pid"
+USER=andrew
+APP_PATH=/home/$USER/Sites/depot
+RAILS_ROOT=$APP_PATH/current
+
+PID=$RAILS_ROOT/shared/pids/unicorn.pid
 OLD_PID="$PID.oldbin"
 
-# make sure the app exists
-cd $APP_ROOT || exit 1
+CONFIG=$RAILS_ROOT/config/unicorn.rb
+
+ENV=production
+
+bundle="/home/andrew/.rvm/bin/default_bundle"
+CMD="$bundle exec unicorn -E $ENV -c $CONFIG -D"
+
+cd $RAILS_ROOT || exit 1
 
 sig () {
-  test -s "$PID" && kill -$1 `cat $PID`
+  test -s "$PID" && kill -$1 $(cat $PID)
 }
 
 oldsig () {
-  test -s $OLD_PID && kill -$1 `cat $OLD_PID`
+  test -s $OLD_PID && kill -$1 $(cat $OLD_PID)
 }
 
 case $1 in
   start)
     sig 0 && echo >&2 "Already running" && exit 0
-    echo "Starting $APP_NAME"
-    su - $USER -c "$CMD"
+    su $USER -c "$CMD"
     ;;
   stop)
-    echo "Stopping $APP_NAME"
     sig QUIT && exit 0
     echo >&2 "Not running"
     ;;
   force-stop)
-    echo "Force stopping $APP_NAME"
     sig TERM && exit 0
     echo >&2 "Not running"
     ;;
-  restart|reload|upgrade)
-    sig USR2 && echo "reloaded $APP_NAME" && exit 0
+  restart|reload)
+    sig HUP && echo reloaded OK && exit 0
     echo >&2 "Couldn't reload, starting '$CMD' instead"
-    $CMD
+    su $USER -c "$CMD"
+    ;;
+  upgrade)
+    sig USR2 && exit 0
+    echo >&2 "Couldn't upgrade, starting '$CMD' instead"
+    su $USER -c "$CMD"
     ;;
   rotate)
     sig USR1 && echo rotated logs OK && exit 0
     echo >&2 "Couldn't rotate logs" && exit 1
     ;;
   *)
-    echo >&2 $USAGE
+    echo >&2 "Usage: $0 <start|stop|restart|upgrade|rotate|force-stop>"
     exit 1
     ;;
 esac
 
+-------------------------------------------------------------
 
 устанавливаем права на созданный скрипт и добавляем его в автозапуск:
 sudo chmod 755 /etc/init.d/unicorn_depot
 sudo update-rc.d unicorn_depot defaults
 
+устанавливаем сервер nginx:
+sudo apt-get install nginx
 
+правим файл, описывающий сайты /etc/nginx/sites-available/default,
+заменяем его содержимое следующим:
+-----------------------------------------------------------
+upstream app {
+    # Path to Unicorn SOCK file, as defined previously
+    server unix:/home/andrew/Sites/depot/current/shared/sockets/=unicorn.sock fail_timeout=0;
+}
+
+server {
+    listen 80;
+    server_name localhost;
+
+    root /home/andrew/Sites/depot/current/public;
+
+    try_files $uri/index.html $uri @app;
+
+    location @app {
+        proxy_pass http://app;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header Host $http_host;
+        proxy_redirect off;
+    }
+
+    error_page 500 502 503 504 /500.html;
+    client_max_body_size 4G;
+    keepalive_timeout 10;
+}
+
+-----------------------------------------------------------
+
+применяем параметры nginx перезагрузкой
+sudo service nginx restart
+
+
+
+
+
+
+
+после этого сайт должен заработать на ip сервера
+смотрим ошибки ror
+\current\log\
+\shared\log\
 
 
