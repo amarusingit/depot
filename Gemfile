@@ -9,10 +9,10 @@ group :production, :development do
     gem 'pg'
 end
 
-group :test do
+#group :test do
     # Use sqlite3 as the database for Active Record for test and development
-    gem 'sqlite3'
-end
+gem 'sqlite3'
+#end
 
 # Use Capistrano for deployment
 group :development do
