@@ -23,6 +23,7 @@ set :default_env, { rvm_bin_path: '~/.rvm/bin' }
 # files we want symlinking to specific entries in shared.
 set :linked_files, %w{config/database.yml}
 set :linked_files, %w{config/initializers/secret_token.rb}
+set :linked_files, %w{config/secrets.yml}
 
 set :linked_dirs, %w{shared}
 
