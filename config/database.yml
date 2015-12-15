@@ -11,13 +11,8 @@ default: &default
   timeout: 5000
 
 development:
-  adapter: postgresql
-  encoding: utf8
-  database: depot_development
-  pool: 5
-  username: andrew
-  password: r5t6yR%T^Y
-  host: localhost
+  <<: *default
+  database: db/development.sqlite3
 
 
 #  <<: *default
