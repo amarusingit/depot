@@ -1,14 +1,27 @@
 development:
   address:              localhost
   port:                 1025
+  domain:               "fancy_gifts_shop.net"
+  authentication:       "plain"
+  user_name:            "truly.pully"
+  password:             "secret"
+  enable_starttls_auto: true
 
 test:
+  address:              "smtp.gmail.com"
+  port:                 1025
+  domain:               "fancy_gifts_shop.net"
+  authentication:       "plain"
+  user_name:            "truly.pully"
+  password:             "secret"
+  enable_starttls_auto: true
 
 production:
-  address:              "smtp.gmail.com",
-  port:                 25,
-  domain:               "fancy_gifts_shop.net",
-  authentication:       "plain",
-  user_name:            "truly.pully",
-  password:             "secret",
+  address:              "smtp.gmail.com"
+  port:                 25
+  domain:               "fancy_gifts_shop.net"
+  authentication:       "plain"
+  user_name:            "truly.pully"
+  password:             "secret"
   enable_starttls_auto: true
+  
